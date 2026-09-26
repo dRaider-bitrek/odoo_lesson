@@ -11,13 +11,13 @@
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
-        # 'data/hr_hospital_disease_data.xml',
+        'data/hr_hospital_disease_data.xml',
         'views/hr_hospital_menu.xml',
         'views/hr_hospital_views.xml',
 
     ],
     'demo': [
-        # 'demo/hr_hospital_demo.xml',
+        'demo/hr_hospital_demo.xml',
     ],
     'images': [
         'custom_addons/odoo_lesson/hr_hospital/static/description/icons8-96.png'

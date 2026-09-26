@@ -1,0 +1,28 @@
+<odoo>
+    <record id="doctor_ivan_kovalenko" model="hr.hospital.doctor">
+        <field name="name">Ivan Kovalenko</field>
+    </record>
+    <record id="doctor_olena_melnyk" model="hr.hospital.doctor">
+        <field name="name">Olena Melnyk</field>
+        <field name="observing_doctor_id" ref="doctor_ivan_kovalenko"/>
+    </record>
+    <record id="doctor_andrii_bondar" model="hr.hospital.doctor">
+        <field name="name">Andrii Bondar</field>
+    </record>
+
+    <record id="patient_anna_shevchenko" model="hr.hospital.patient">
+        <field name="name">Anna Shevchenko</field>
+        <field name="doctor_id" ref="doctor_olena_melnyk"/>
+        <field name="disease_id" ref="disease_hypertension"/>
+    </record>
+    <record id="patient_mykola_tkachenko" model="hr.hospital.patient">
+        <field name="name">Mykola Tkachenko</field>
+        <field name="doctor_id" ref="doctor_ivan_kovalenko"/>
+        <field name="disease_id" ref="disease_influenza"/>
+    </record>
+    <record id="patient_sofiia_kravets" model="hr.hospital.patient">
+        <field name="name">Sofiia Kravets</field>
+        <field name="doctor_id" ref="doctor_andrii_bondar"/>
+        <field name="disease_id" ref="disease_diabetes"/>
+    </record>
+</odoo>
