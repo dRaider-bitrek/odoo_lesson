@@ -1,0 +1,30 @@
+<odoo>
+
+    <record id="action_hr_hospital_doctor" model ="ir.actions.act_window">
+        <field name="name">Doctors</field>
+        <field name ="res_model">hr.hospital.doctor</field>
+        <field name ="view_mode">list,form</field>
+    </record>
+
+        <record id="action_hr_hospital_patient" model ="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name ="res_model">hr.hospital.patient</field>
+        <field name ="view_mode">list,form</field>
+    </record>
+
+
+    <menuitem id="menu_hr_hospital_root"
+              web_icon = "hr_hospital,static/description/icons8-48.png"
+              name ="Hospital" sequence="10"/>
+
+    <menuitem id="menu_hospital_patient"
+              parent = "menu_hr_hospital_root"
+              name ="Patient"
+              action ="action_hr_hospital_patient"
+              sequence="100"/>
+    <menuitem id="menu_hospital_doctor"
+              parent = "menu_hr_hospital_root"
+              name ="Doctor"
+              action ="action_hr_hospital_doctor"
+              sequence="200"/>
+</odoo>

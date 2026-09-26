@@ -1,0 +1,113 @@
+<odoo>
+    <record id="view_hr_hospital_doctor_list" model="ir.ui.view">
+        <field name="name">hr.hospital.doctor.list</field>
+        <field name="model">hr.hospital.doctor</field>
+        <field name="arch" type="xml">
+            <list string="Doctors">
+                <field name="name"/>
+                <field name="observing_doctor_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_hospital_doctor_form" model="ir.ui.view">
+        <field name="name">hr.hospital.doctor.form</field>
+        <field name="model">hr.hospital.doctor</field>
+        <field name="arch" type="xml">
+            <form string="Doctor">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="observing_doctor_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_hospital_patient_list" model="ir.ui.view">
+        <field name="name">hr.hospital.patient.list</field>
+        <field name="model">hr.hospital.patient</field>
+        <field name="arch" type="xml">
+            <list string="Patients">
+                <field name="name"/>
+                <field name="doctor_id"/>
+                <field name="disease_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_hospital_patient_form" model="ir.ui.view">
+        <field name="name">hr.hospital.patient.form</field>
+        <field name="model">hr.hospital.patient</field>
+        <field name="arch" type="xml">
+            <form string="Patient">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="doctor_id"/>
+                        <field name="disease_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_hospital_disease_list" model="ir.ui.view">
+        <field name="name">hr.hospital.disease.list</field>
+        <field name="model">hr.hospital.disease</field>
+        <field name="arch" type="xml">
+            <list string="Diseases">
+                <field name="name"/>
+                <field name="description"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_hospital_disease_form" model="ir.ui.view">
+        <field name="name">hr.hospital.disease.form</field>
+        <field name="model">hr.hospital.disease</field>
+        <field name="arch" type="xml">
+            <form string="Disease">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_hospital_visit_list" model="ir.ui.view">
+        <field name="name">hr.hospital.visit.list</field>
+        <field name="model">hr.hospital.visit</field>
+        <field name="arch" type="xml">
+            <list string="Patient Visits">
+                <field name="name"/>
+                <field name="visit_date"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="disease_id"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_hr_hospital_visit_form" model="ir.ui.view">
+        <field name="name">hr.hospital.visit.form</field>
+        <field name="model">hr.hospital.visit</field>
+        <field name="arch" type="xml">
+            <form string="Patient Visit">
+            <sheet>
+                <group>
+                    <field name="name"/>
+                    <field name="visit_date"/>
+                    <field name="patient_id"/>
+                    <field name="doctor_id"/>
+                    <field name="disease_id"/>
+                </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
