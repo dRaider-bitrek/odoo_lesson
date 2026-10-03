@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="visit_report_wizard_view_form" model="ir.ui.view">
+        <field name="name">visit.report.wizard.view.form</field>
+        <field name="model">visit.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Patient Visit Report">
+                <group>
+                    <group>
+                        <field name="doctor_ids" widget="many2many_tags"/>
+                        <field name="patient_ids" widget="many2many_tags"/>
+                        <field name="disease_id"/>
+                    </group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <field name="completed_only"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_open_visits" string="Generate Report" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="visit_report_wizard_doctor_action" model="ir.actions.act_window">
+        <field name="name">Patient Visit Report</field>
+        <field name="res_model">visit.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="visit_report_wizard_view_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_hr_hospital_doctor"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+    <record id="visit_report_wizard_patient_action" model="ir.actions.act_window">
+        <field name="name">Patient Visit Report</field>
+        <field name="res_model">visit.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="visit_report_wizard_view_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_hr_hospital_patient"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+</odoo>
