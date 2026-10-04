@@ -1,77 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_hr_hospital_doctor_list" model="ir.ui.view">
-        <field name="name">hr.hospital.doctor.list</field>
-        <field name="model">hr.hospital.doctor</field>
+    <record id="hospital_doctor_category_view_list" model="ir.ui.view">
+        <field name="name">hospital.doctor.category.view.list</field>
+        <field name="model">hospital.doctor.category</field>
         <field name="arch" type="xml">
-            <list string="Doctors">
+            <list string="Doctor Qualifications">
+                <field name="sequence"/>
                 <field name="name"/>
-                <field name="observing_doctor_id"/>
+                <field name="is_intern_category"/>
             </list>
         </field>
     </record>
 
-    <record id="view_hr_hospital_doctor_form" model="ir.ui.view">
-        <field name="name">hr.hospital.doctor.form</field>
-        <field name="model">hr.hospital.doctor</field>
+    <record id="hospital_doctor_category_view_form" model="ir.ui.view">
+        <field name="name">hospital.doctor.category.view.form</field>
+        <field name="model">hospital.doctor.category</field>
         <field name="arch" type="xml">
-            <form string="Doctor">
+            <form string="Doctor Qualification">
                 <sheet>
                     <group>
                         <field name="name"/>
-                        <field name="observing_doctor_id"/>
+                        <field name="sequence"/>
+                        <field name="is_intern_category"/>
+                    </group>
+                    <notebook>
+                        <page string="Doctors">
+                            <field name="doctor_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hospital_doctor_history_view_list" model="ir.ui.view">
+        <field name="name">hospital.doctor.history.view.list</field>
+        <field name="model">hospital.doctor.history</field>
+        <field name="arch" type="xml">
+            <list string="Personal Doctor History">
+                <field name="display_name" string="History Entry"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="assignment_date"/>
+                <field name="change_date"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="hospital_doctor_history_view_form" model="ir.ui.view">
+        <field name="name">hospital.doctor.history.view.form</field>
+        <field name="model">hospital.doctor.history</field>
+        <field name="arch" type="xml">
+            <form string="Personal Doctor History">
+                <sheet>
+                    <group>
+                        <field name="patient_id"/>
+                        <field name="doctor_id"/>
+                        <field name="assignment_date"/>
+                        <field name="change_date"/>
+                        <field name="active"/>
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <record id="view_hr_hospital_patient_list" model="ir.ui.view">
-        <field name="name">hr.hospital.patient.list</field>
+    <record id="hr_hospital_doctor_view_list" model="ir.ui.view">
+        <field name="name">hr.hospital.doctor.view.list</field>
+        <field name="model">hr.hospital.doctor</field>
+        <field name="arch" type="xml">
+            <list string="Doctors">
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="observing_doctor_id"/>
+                <field name="user_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="hr_hospital_doctor_view_form" model="ir.ui.view">
+        <field name="name">hr.hospital.doctor.view.form</field>
+        <field name="model">hr.hospital.doctor</field>
+        <field name="arch" type="xml">
+            <form string="Doctor">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="category_id"/>
+                            <field name="is_intern" invisible="True"/>
+                            <field name="observing_doctor_id" invisible="not is_intern"/>
+                            <field name="user_id"/>
+                        </group>
+                        <group string="Medical Information">
+                            <field name="blood_type"/>
+                            <field name="gender"/>
+                            <field name="birth_date"/>
+                            <field name="age" readonly="True"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_hospital_patient_view_list" model="ir.ui.view">
+        <field name="name">hr.hospital.patient.view.list</field>
         <field name="model">hr.hospital.patient</field>
         <field name="arch" type="xml">
             <list string="Patients">
                 <field name="name"/>
                 <field name="doctor_id"/>
                 <field name="disease_id"/>
+                <field name="insurance_policy_number"/>
             </list>
         </field>
     </record>
 
-    <record id="view_hr_hospital_patient_form" model="ir.ui.view">
-        <field name="name">hr.hospital.patient.form</field>
+    <record id="hr_hospital_patient_view_form" model="ir.ui.view">
+        <field name="name">hr.hospital.patient.view.form</field>
         <field name="model">hr.hospital.patient</field>
         <field name="arch" type="xml">
             <form string="Patient">
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="doctor_id"/>
-                        <field name="disease_id"/>
+                        <group>
+                            <field name="name"/>
+                            <field name="doctor_id"/>
+                            <field name="disease_id"/>
+                            <field name="insurance_policy_number"/>
+                        </group>
+                        <group string="Medical Information">
+                            <field name="blood_type"/>
+                            <field name="gender"/>
+                            <field name="birth_date"/>
+                            <field name="age" readonly="True"/>
+                        </group>
                     </group>
+                    <notebook>
+                        <page string="Personal Doctor History">
+                            <field name="doctor_history_ids">
+                                <list editable="bottom">
+                                    <field name="doctor_id"/>
+                                    <field name="assignment_date"/>
+                                    <field name="change_date"/>
+                                    <field name="active"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <record id="view_hr_hospital_disease_list" model="ir.ui.view">
-        <field name="name">hr.hospital.disease.list</field>
+    <record id="hr_hospital_disease_view_list" model="ir.ui.view">
+        <field name="name">hr.hospital.disease.view.list</field>
         <field name="model">hr.hospital.disease</field>
         <field name="arch" type="xml">
             <list string="Diseases">
-                <field name="name"/>
+                <field name="display_name" string="Disease"/>
+                <field name="parent_id"/>
                 <field name="description"/>
             </list>
         </field>
     </record>
 
-    <record id="view_hr_hospital_disease_form" model="ir.ui.view">
-        <field name="name">hr.hospital.disease.form</field>
+    <record id="hr_hospital_disease_view_form" model="ir.ui.view">
+        <field name="name">hr.hospital.disease.view.form</field>
         <field name="model">hr.hospital.disease</field>
         <field name="arch" type="xml">
             <form string="Disease">
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="parent_id" domain="[('id', '!=', id)]"/>
                         <field name="description"/>
                     </group>
                 </sheet>
@@ -79,35 +183,42 @@
         </field>
     </record>
 
-    <record id="view_hr_hospital_visit_list" model="ir.ui.view">
-        <field name="name">hr.hospital.visit.list</field>
+    <record id="hr_hospital_visit_view_list" model="ir.ui.view">
+        <field name="name">hr.hospital.visit.view.list</field>
         <field name="model">hr.hospital.visit</field>
         <field name="arch" type="xml">
             <list string="Patient Visits">
                 <field name="name"/>
-                <field name="visit_date"/>
+                <field name="state"/>
+                <field name="scheduled_datetime"/>
+                <field name="actual_datetime"/>
                 <field name="patient_id"/>
                 <field name="doctor_id"/>
                 <field name="disease_id"/>
             </list>
         </field>
     </record>
-    <record id="view_hr_hospital_visit_form" model="ir.ui.view">
-        <field name="name">hr.hospital.visit.form</field>
+
+    <record id="hr_hospital_visit_view_form" model="ir.ui.view">
+        <field name="name">hr.hospital.visit.view.form</field>
         <field name="model">hr.hospital.visit</field>
         <field name="arch" type="xml">
             <form string="Patient Visit">
-            <sheet>
-                <group>
-                    <field name="name"/>
-                    <field name="visit_date"/>
-                    <field name="patient_id"/>
-                    <field name="doctor_id"/>
-                    <field name="disease_id"/>
-                </group>
-            </sheet>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="state"/>
+                        <field name="scheduled_datetime"/>
+                        <field name="actual_datetime"/>
+                        <field name="patient_id"/>
+                        <field name="doctor_id"/>
+                        <field name="disease_id"/>
+                    </group>
+                    <group>
+                        <field name="summary"/>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>
-
 </odoo>
