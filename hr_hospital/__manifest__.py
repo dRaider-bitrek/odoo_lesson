@@ -23,7 +23,7 @@
         'demo/hr_hospital_demo.xml',
     ],
     'images': [
-        'custom_addons/odoo_lesson/hr_hospital/static/description/icons8-96.png'
+        'custom_addons/odoo_lesson/hr_hospital/static/description/icons8-96.png',
         ],
     'installable': True,
     'application': True,

@@ -33,12 +33,12 @@ class HospitalVisit(models.Model):
     def write(self, vals):
         protected_fields = {'scheduled_datetime', 'actual_datetime', 'doctor_id'}
         if protected_fields.intersection(vals) and self.filtered(
-            lambda visit: visit.state == 'completed'
+            lambda visit: visit.state == 'completed',
         ):
             raise UserError(
                 self.env._(
-                    'The date, time, and doctor cannot be changed for a completed visit.'
-                )
+                    'The date, time, and doctor cannot be changed for a completed visit.',
+                ),
             )
         if 'active' in vals and self.filtered(lambda visit: visit.state == 'completed'):
             raise UserError(self.env._('A completed visit cannot be archived.'))

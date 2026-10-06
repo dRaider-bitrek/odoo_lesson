@@ -1,10 +1,11 @@
 from odoo import api, fields, models
 
+
 class HospitalDoctorHistory(models.Model):
     _name = 'hospital.doctor.history'
     _description = 'Hospital Personal Doctor History'
     _order = 'assignment_date desc, id desc'
-    _rec_names_search = ['patient_id','doctor_id']
+    _rec_names_search = ['patient_id', 'doctor_id']
 
     patient_id = fields.Many2one(
         'hr.hospital.patient',
@@ -46,7 +47,8 @@ class HospitalDoctorHistory(models.Model):
                 'warning': {
                     'title': self.env._('Invalid doctor change date'),
                     'message': self.env._(
-                        'Дата зміни лікаря не може бути раніше ніж дата призначення'
+                        'Дата зміни лікаря не може бути раніше ніж дата призначення',
                     ),
-                }
+                },
             }
+        return None
