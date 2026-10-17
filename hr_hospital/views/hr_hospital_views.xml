@@ -117,12 +117,12 @@
                             <!-- Object actions centralize visit defaults. A separate XML action was rejected because it would duplicate default contexts for patient and doctor entry points. -->
                             <button name="action_create_visit" type="object" string="Create Visit" class="btn btn-primary mt-2"/>
                         </main>
-                        <menu type="action">
-                            <item type="edit" string="Edit"/>
-                            <item type="delete" string="Delete"/>
-                            <item t-if="record.active.raw_value" type="archive" string="Archive"/>
-                            <item t-if="!record.active.raw_value" type="unarchive" string="Unarchive"/>
-                        </menu>
+                    </t>
+                    <t t-name="menu" t-if="!selection_mode">
+                        <a type="edit" class="dropdown-item">Edit</a>
+                        <a type="delete" class="dropdown-item">Delete</a>
+                        <a t-if="record.active.raw_value" type="archive" class="dropdown-item">Archive</a>
+                        <a t-if="!record.active.raw_value" type="unarchive" class="dropdown-item">Unarchive</a>
                     </t>
                 </templates>
             </kanban>
