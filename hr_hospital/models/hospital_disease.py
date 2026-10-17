@@ -33,5 +33,5 @@ class HospitalDisease(models.Model):
     def _check_disease_hierarchy(self):
         if self._has_cycle():
             raise ValidationError(
-                self.env._('A disease cannot be a parent of itself or one of its descendants.')
+                self.env._('A disease cannot be a parent of itself or one of its descendants.'),
             )

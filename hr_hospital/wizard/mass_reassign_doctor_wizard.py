@@ -24,6 +24,6 @@ class MassReassignDoctorWizard(models.TransientModel):
                     'assignment_date': self.change_date,
                 }
                 for patient in patients
-            ]
+            ],
         )
         return {'type': 'ir.actions.act_window_close'}
