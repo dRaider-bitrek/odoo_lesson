@@ -136,7 +136,7 @@
             <form string="Doctor">
                 <sheet>
                     <group>
-                        <group>
+                        <group string="Doctor Information">
                             <field name="name"/>
                             <field name="category_id"/>
                             <field name="is_intern" invisible="True"/>
@@ -214,7 +214,7 @@
                         </button>
                     </div>
                     <group>
-                        <group>
+                        <group string="Patient Information">
                             <field name="name"/>
                             <field name="phone"/>
                             <field name="doctor_id"/>
