@@ -25,6 +25,7 @@ class HospitalMedicInfo(models.AbstractModel):
         string='Gender',
     )
     birth_date = fields.Date(string='Date of Birth')
+    phone = fields.Char(string='Phone', index=True)
     age = fields.Integer(compute='_compute_age', string='Age')
 
     @api.depends('birth_date')

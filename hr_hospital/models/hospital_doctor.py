@@ -11,6 +11,7 @@ class HospitalDoctor(models.Model):
     name = fields.Char(string='Doctor Name', required=True, index=True)
     category_id = fields.Many2one('hospital.doctor.category', string='Category')
     user_id = fields.Many2one('res.users', string='User')
+    active = fields.Boolean(default=True)
     is_intern = fields.Boolean(compute='_compute_is_intern', store=True)
 
     observing_doctor_id = fields.Many2one(
@@ -18,6 +19,27 @@ class HospitalDoctor(models.Model):
         string='Observing Doctor',
         domain="[('is_intern', '=', False), ('id', '!=', id)]",
     )
+    intern_ids = fields.One2many(
+        'hr.hospital.doctor',
+        'observing_doctor_id',
+        string='Interns',
+    )
+    intern_count = fields.Integer(compute='_compute_intern_count')
+
+    def _compute_intern_count(self):
+        for doctor in self:
+            doctor.intern_count = len(doctor.intern_ids)
+
+    def action_create_visit(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': self.env._('New Patient Visit'),
+            'res_model': 'hr.hospital.visit',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_doctor_id': self.id},
+        }
 
     @api.depends('category_id.is_intern_category')
     def _compute_is_intern(self):

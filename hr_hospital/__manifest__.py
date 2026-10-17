@@ -8,11 +8,12 @@
     'author': 'dRaider',
     'website': 'https://www.odoo.com',
     'license': 'LGPL-3',
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'data': [
         'security/ir.model.access.csv',
         'data/hospital_doctor_category_data.xml',
         'data/hr_hospital_disease_data.xml',
+        'data/hr_hospital_actions.xml',
         'views/hr_hospital_menu.xml',
         'views/hr_hospital_views.xml',
         'wizard/mass_reassign_doctor_wizard_views.xml',

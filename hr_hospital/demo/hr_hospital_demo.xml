@@ -11,21 +11,34 @@
     <record id="doctor_andrii_bondar" model="hr.hospital.doctor">
         <field name="name">Andrii Bondar</field>
     </record>
+    <record id="doctor_maria_romaniv" model="hr.hospital.doctor">
+        <field name="name">Maria Romaniv</field>
+        <field name="category_id" ref="doctor_category_intern"/>
+        <field name="observing_doctor_id" ref="doctor_ivan_kovalenko"/>
+    </record>
+    <record id="doctor_taras_hnatiuk" model="hr.hospital.doctor">
+        <field name="name">Taras Hnatiuk</field>
+        <field name="category_id" ref="doctor_category_intern"/>
+        <field name="observing_doctor_id" ref="doctor_ivan_kovalenko"/>
+    </record>
 
     <record id="patient_anna_shevchenko" model="hr.hospital.patient">
         <field name="name">Anna Shevchenko</field>
         <field name="doctor_id" ref="doctor_olena_melnyk"/>
         <field name="disease_id" ref="disease_hypertension"/>
+        <field name="phone">+380671234567</field>
     </record>
     <record id="patient_mykola_tkachenko" model="hr.hospital.patient">
         <field name="name">Mykola Tkachenko</field>
         <field name="doctor_id" ref="doctor_ivan_kovalenko"/>
         <field name="disease_id" ref="disease_influenza"/>
+        <field name="phone">+380501112233</field>
     </record>
     <record id="patient_sofiia_kravets" model="hr.hospital.patient">
         <field name="name">Sofiia Kravets</field>
         <field name="doctor_id" ref="doctor_andrii_bondar"/>
         <field name="disease_id" ref="disease_diabetes"/>
+        <field name="phone">+380931234567</field>
     </record>
 
     <record id="disease_cardiovascular" model="hr.hospital.disease">
@@ -120,6 +133,58 @@
         <field name="name">Endocrinologist consultation</field>
         <field name="state">cancelled</field>
         <field name="scheduled_datetime">2026-10-01 16:00:00</field>
+        <field name="patient_id" ref="patient_sofiia_kravets"/>
+        <field name="doctor_id" ref="doctor_andrii_bondar"/>
+        <field name="disease_id" ref="disease_diabetes"/>
+    </record>
+    <record id="visit_anna_february" model="hr.hospital.visit">
+        <field name="name">February blood pressure check</field>
+        <field name="state">completed</field>
+        <field name="scheduled_datetime">2026-02-12 09:00:00</field>
+        <field name="actual_datetime">2026-02-12 09:10:00</field>
+        <field name="patient_id" ref="patient_anna_shevchenko"/>
+        <field name="doctor_id" ref="doctor_olena_melnyk"/>
+        <field name="disease_id" ref="disease_hypertension"/>
+    </record>
+    <record id="visit_mykola_march" model="hr.hospital.visit">
+        <field name="name">March flu consultation</field>
+        <field name="state">completed</field>
+        <field name="scheduled_datetime">2026-03-18 11:30:00</field>
+        <field name="actual_datetime">2026-03-18 11:45:00</field>
+        <field name="patient_id" ref="patient_mykola_tkachenko"/>
+        <field name="doctor_id" ref="doctor_ivan_kovalenko"/>
+        <field name="disease_id" ref="disease_influenza"/>
+    </record>
+    <record id="visit_sofiia_april" model="hr.hospital.visit">
+        <field name="name">April glucose monitoring</field>
+        <field name="state">completed</field>
+        <field name="scheduled_datetime">2026-04-22 15:00:00</field>
+        <field name="actual_datetime">2026-04-22 15:20:00</field>
+        <field name="patient_id" ref="patient_sofiia_kravets"/>
+        <field name="doctor_id" ref="doctor_andrii_bondar"/>
+        <field name="disease_id" ref="disease_diabetes"/>
+    </record>
+    <record id="visit_anna_may" model="hr.hospital.visit">
+        <field name="name">May hypertension follow-up</field>
+        <field name="state">cancelled</field>
+        <field name="scheduled_datetime">2026-05-14 10:00:00</field>
+        <field name="patient_id" ref="patient_anna_shevchenko"/>
+        <field name="doctor_id" ref="doctor_olena_melnyk"/>
+        <field name="disease_id" ref="disease_hypertension"/>
+    </record>
+    <record id="visit_mykola_june" model="hr.hospital.visit">
+        <field name="name">June respiratory check</field>
+        <field name="state">completed</field>
+        <field name="scheduled_datetime">2026-06-09 13:00:00</field>
+        <field name="actual_datetime">2026-06-09 13:15:00</field>
+        <field name="patient_id" ref="patient_mykola_tkachenko"/>
+        <field name="doctor_id" ref="doctor_ivan_kovalenko"/>
+        <field name="disease_id" ref="disease_pneumonia"/>
+    </record>
+    <record id="visit_sofiia_august" model="hr.hospital.visit">
+        <field name="name">August endocrinology visit</field>
+        <field name="state">cancelled</field>
+        <field name="scheduled_datetime">2026-08-27 14:00:00</field>
         <field name="patient_id" ref="patient_sofiia_kravets"/>
         <field name="doctor_id" ref="doctor_andrii_bondar"/>
         <field name="disease_id" ref="disease_diabetes"/>

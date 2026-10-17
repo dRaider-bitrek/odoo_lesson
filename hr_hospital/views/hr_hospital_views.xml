@@ -79,6 +79,56 @@
         </field>
     </record>
 
+    <record id="hr_hospital_doctor_view_search" model="ir.ui.view">
+        <field name="name">hr.hospital.doctor.view.search</field>
+        <field name="model">hr.hospital.doctor</field>
+        <field name="arch" type="xml">
+            <search string="Doctors">
+                <field name="name"/>
+                <field name="category_id"/>
+                <filter name="mentors" string="Mentors" domain="[('intern_ids', '!=', False)]"/>
+                <filter name="interns" string="Interns" domain="[('is_intern', '=', True)]"/>
+                <separator/>
+                <filter name="group_by_category" string="Group by Qualification"
+                        context="{'group_by': 'category_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="hr_hospital_doctor_view_kanban" model="ir.ui.view">
+        <field name="name">hr.hospital.doctor.view.kanban</field>
+        <field name="model">hr.hospital.doctor</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="category_id">
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="observing_doctor_id"/>
+                <field name="active"/>
+                <templates>
+                    <t t-name="card">
+                        <main>
+                            <strong><field name="name"/></strong>
+                            <div t-if="record.category_id.raw_value">
+                                <field name="category_id"/>
+                            </div>
+                            <div t-if="record.observing_doctor_id.raw_value">
+                                Mentor: <field name="observing_doctor_id"/>
+                            </div>
+                            <!-- Object actions centralize visit defaults. A separate XML action was rejected because it would duplicate default contexts for patient and doctor entry points. -->
+                            <button name="action_create_visit" type="object" string="Create Visit" class="btn btn-primary mt-2"/>
+                        </main>
+                        <menu type="action">
+                            <item type="edit" string="Edit"/>
+                            <item type="delete" string="Delete"/>
+                            <item t-if="record.active.raw_value" type="archive" string="Archive"/>
+                            <item t-if="!record.active.raw_value" type="unarchive" string="Unarchive"/>
+                        </menu>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="hr_hospital_doctor_view_form" model="ir.ui.view">
         <field name="name">hr.hospital.doctor.view.form</field>
         <field name="model">hr.hospital.doctor</field>
@@ -100,6 +150,24 @@
                             <field name="age" readonly="True"/>
                         </group>
                     </group>
+                    <notebook>
+                        <page string="Interns" invisible="not intern_ids">
+                            <field name="intern_ids" mode="kanban" readonly="True">
+                                <kanban>
+                                    <field name="name"/>
+                                    <field name="category_id"/>
+                                    <templates>
+                                        <t t-name="card">
+                                            <main>
+                                                <strong><field name="name"/></strong>
+                                                <div><field name="category_id"/></div>
+                                            </main>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -111,10 +179,23 @@
         <field name="arch" type="xml">
             <list string="Patients">
                 <field name="name"/>
+                <field name="phone"/>
                 <field name="doctor_id"/>
                 <field name="disease_id"/>
                 <field name="insurance_policy_number"/>
             </list>
+        </field>
+    </record>
+
+    <record id="hr_hospital_patient_view_search" model="ir.ui.view">
+        <field name="name">hr.hospital.patient.view.search</field>
+        <field name="model">hr.hospital.patient</field>
+        <field name="arch" type="xml">
+            <search string="Patients">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="doctor_id"/>
+            </search>
         </field>
     </record>
 
@@ -123,10 +204,19 @@
         <field name="model">hr.hospital.patient</field>
         <field name="arch" type="xml">
             <form string="Patient">
+                <header>
+                    <button name="action_create_visit" string="Create Visit" type="object" class="btn-primary"/>
+                </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_visits" type="object" class="oe_stat_button" icon="fa-calendar">
+                            <field name="visit_count" widget="statinfo" string="Visits"/>
+                        </button>
+                    </div>
                     <group>
                         <group>
                             <field name="name"/>
+                            <field name="phone"/>
                             <field name="doctor_id"/>
                             <field name="disease_id"/>
                             <field name="insurance_policy_number"/>
@@ -199,25 +289,102 @@
         </field>
     </record>
 
+    <record id="hr_hospital_visit_view_search" model="ir.ui.view">
+        <field name="name">hr.hospital.visit.view.search</field>
+        <field name="model">hr.hospital.visit</field>
+        <field name="arch" type="xml">
+            <search string="Patient Visits">
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="disease_id"/>
+                <filter name="current_year" string="Current Year"
+                        domain="[('scheduled_datetime', '>=', context_today().strftime('%Y-01-01')), ('scheduled_datetime', '&lt;', (context_today() + relativedelta(years=1)).strftime('%Y-01-01'))]"/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter name="group_by_state" string="Group by Status" context="{'group_by': 'state'}"/>
+                <filter name="group_by_doctor" string="Group by Doctor" context="{'group_by': 'doctor_id'}"/>
+                <filter name="group_by_disease" string="Group by Disease" context="{'group_by': 'disease_id'}"/>
+                <filter name="group_by_month" string="Group by Month"
+                        context="{'group_by': 'scheduled_datetime:month'}"/>
+                <searchpanel>
+                    <field name="doctor_id" icon="fa-user-md"/>
+                    <field name="disease_id" select="multi" hierarchize="1"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <record id="hr_hospital_visit_view_calendar" model="ir.ui.view">
+        <field name="name">hr.hospital.visit.view.calendar</field>
+        <field name="model">hr.hospital.visit</field>
+        <field name="arch" type="xml">
+            <calendar string="Patient Visits" date_start="scheduled_datetime" color="doctor_id">
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="disease_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="hr_hospital_visit_view_pivot" model="ir.ui.view">
+        <field name="name">hr.hospital.visit.view.pivot</field>
+        <field name="model">hr.hospital.visit</field>
+        <field name="arch" type="xml">
+            <pivot string="Visits by Doctor and Status">
+                <field name="doctor_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="scheduled_datetime" interval="month" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="hr_hospital_visit_view_graph" model="ir.ui.view">
+        <field name="name">hr.hospital.visit.view.graph</field>
+        <field name="model">hr.hospital.visit</field>
+        <field name="arch" type="xml">
+            <graph string="Visits by Month and Disease" type="bar" stacked="1">
+                <field name="scheduled_datetime" interval="month"/>
+                <field name="disease_id" type="col"/>
+            </graph>
+        </field>
+    </record>
+
     <record id="hr_hospital_visit_view_form" model="ir.ui.view">
         <field name="name">hr.hospital.visit.view.form</field>
         <field name="model">hr.hospital.visit</field>
         <field name="arch" type="xml">
             <form string="Patient Visit">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="planned,completed,cancelled"
+                           options="{'clickable': True}"/>
+                </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_same_disease_visits" type="object" class="oe_stat_button"
+                                icon="fa-medkit" invisible="not disease_id">
+                            <field name="same_disease_visit_count" widget="statinfo" string="Same Disease"/>
+                        </button>
+                    </div>
                     <group>
-                        <field name="name"/>
-                        <field name="state"/>
-                        <field name="scheduled_datetime"/>
-                        <field name="actual_datetime"/>
-                        <field name="patient_id"/>
-                        <field name="doctor_id"/>
-                        <field name="disease_id"/>
+                        <group>
+                            <field name="name"/>
+                            <field name="patient_id"/>
+                            <field name="doctor_id"/>
+                            <field name="disease_id"/>
+                        </group>
+                        <group>
+                            <field name="scheduled_datetime"/>
+                            <field name="actual_datetime"/>
+                            <field name="active"/>
+                        </group>
                     </group>
                     <group>
                         <field name="summary"/>
                     </group>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
