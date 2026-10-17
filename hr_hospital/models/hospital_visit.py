@@ -86,9 +86,9 @@ class HospitalVisit(models.Model):
             raise UserError(self.env._('A completed visit cannot be archived.'))
         return super().write(vals)
 
-    def unlink(self):
-        if self.env.context.get('_force_unlink'):
-            return super().unlink()
-        if self.filtered(lambda visit: visit.state == 'completed'):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_completed_visits(self):
+        if not self.env.context.get('_force_unlink') and self.filtered(
+            lambda visit: visit.state == 'completed',
+        ):
             raise UserError(self.env._('A completed visit cannot be deleted.'))
-        return super().unlink()
