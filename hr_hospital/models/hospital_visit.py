@@ -1,12 +1,15 @@
-from odoo import api, fields, models
+from typing import ClassVar
+
 from odoo.exceptions import UserError
+
+from odoo import api, fields, models
 
 
 class HospitalVisit(models.Model):
     _name = 'hr.hospital.visit'
     _description = 'Hospital Patient Visit'
     _order = 'scheduled_datetime desc, id desc'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit: ClassVar[list[str]] = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(required=True, index=True)
     state = fields.Selection(

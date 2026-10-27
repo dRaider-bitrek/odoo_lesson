@@ -1,5 +1,6 @@
 # Copyright 2021 Tecnativa - Jairo Llopis
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
+# ruff: noqa: B018
 {
     'name': 'Hospital Management',
     'version': '19.0.1.0.0',
@@ -19,14 +20,13 @@
         'views/hr_hospital_views.xml',
         'wizard/mass_reassign_doctor_wizard_views.xml',
         'wizard/visit_report_wizard_views.xml',
-
     ],
     'demo': [
         'demo/hr_hospital_demo.xml',
     ],
     'images': [
         'custom_addons/odoo_lesson/hr_hospital/static/description/icons8-96.png',
-        ],
+    ],
     'installable': True,
     'application': True,
 }

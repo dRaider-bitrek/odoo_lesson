@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from odoo import api, fields, models
 
 
@@ -5,7 +7,7 @@ class HospitalDoctorHistory(models.Model):
     _name = 'hospital.doctor.history'
     _description = 'Hospital Personal Doctor History'
     _order = 'assignment_date desc, id desc'
-    _rec_names_search = ['patient_id', 'doctor_id']
+    _rec_names_search: ClassVar[list[str]] = ['patient_id', 'doctor_id']
 
     patient_id = fields.Many2one(
         'hr.hospital.patient',
