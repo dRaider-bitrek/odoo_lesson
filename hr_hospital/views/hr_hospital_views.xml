@@ -99,11 +99,12 @@
         <field name="name">hr.hospital.doctor.view.kanban</field>
         <field name="model">hr.hospital.doctor</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="category_id">
+            <kanban default_group_by="category_id" quick_create="false">
                 <field name="name"/>
                 <field name="category_id"/>
                 <field name="observing_doctor_id"/>
                 <field name="active"/>
+                <field name="intern_ids"/>
                 <templates>
                     <t t-name="card">
                         <main>
@@ -111,8 +112,9 @@
                             <div t-if="record.category_id.raw_value">
                                 <field name="category_id"/>
                             </div>
-                            <div t-if="record.observing_doctor_id.raw_value">
-                                Mentor: <field name="observing_doctor_id"/>
+                            <div t-if="record.intern_ids.raw_value">
+                                <span class="fw-bold">Interns:</span>
+                                <field name="intern_ids" widget="many2many_tags"/>
                             </div>
                             <!-- Object actions centralize visit defaults. A separate XML action was rejected because it would duplicate default contexts for patient and doctor entry points. -->
                             <button name="action_create_visit" type="object" string="Create Visit" class="btn btn-primary mt-2"/>
@@ -139,9 +141,11 @@
                         <group string="Doctor Information">
                             <field name="name"/>
                             <field name="category_id"/>
-                            <field name="is_intern" invisible="True"/>
+                            <field name="is_intern" readonly="True"/>
                             <field name="observing_doctor_id" invisible="not is_intern"/>
                             <field name="user_id"/>
+                            <field name="intern_count" readonly="True"/>
+                            <field name="active"/>
                         </group>
                         <group string="Medical Information">
                             <field name="blood_type"/>
@@ -192,8 +196,8 @@
         <field name="model">hr.hospital.patient</field>
         <field name="arch" type="xml">
             <search string="Patients">
-                <field name="name"/>
-                <field name="phone"/>
+                <field name="name" string="Name or Phone"
+                       filter_domain="['|', ('name', 'ilike', self), ('phone', 'ilike', self)]"/>
                 <field name="doctor_id"/>
             </search>
         </field>
@@ -270,6 +274,20 @@
                     </group>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="hr_hospital_disease_view_search" model="ir.ui.view">
+        <field name="name">hr.hospital.disease.view.search</field>
+        <field name="model">hr.hospital.disease</field>
+        <field name="arch" type="xml">
+            <search string="Diseases">
+                <field name="name"/>
+                <field name="parent_id"/>
+                <searchpanel>
+                    <field name="parent_id" select="multi" hierarchize="1"/>
+                </searchpanel>
+            </search>
         </field>
     </record>
 

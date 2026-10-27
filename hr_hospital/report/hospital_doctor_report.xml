@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_hospital_doctor" model="report.paperformat">
+        <field name="name">Hospital Doctor A4</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">32</field>
+        <field name="margin_bottom">18</field>
+        <field name="margin_left">12</field>
+        <field name="margin_right">12</field>
+        <field name="header_spacing">8</field>
+    </record>
+
+    <record id="action_report_hospital_doctor" model="ir.actions.report">
+        <field name="name">Doctor Profile</field>
+        <field name="model">hr.hospital.doctor</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_hospital.report_hospital_doctor</field>
+        <field name="report_file">hr_hospital.report_hospital_doctor</field>
+        <field name="binding_model_id" ref="model_hr_hospital_doctor"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_hospital_doctor"/>
+        <field name="print_report_name">'Doctor - %s' % (object.name)</field>
+    </record>
+
+    <template id="report_hospital_doctor_layout">
+        <t t-set="company" t-value="env.company"/>
+        <div class="header">
+            <div class="border-bottom" style="height: 42px; line-height: 42px; white-space: nowrap;">
+                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)"
+                     style="max-height: 36px; max-width: 110px; vertical-align: middle;"
+                     alt="Company logo"/>
+                <span style="font-size: 9pt;">
+                    <strong t-field="company.name"/>
+                    <span t-if="company.partner_id.street"> | <span t-field="company.partner_id.street"/></span>
+                    <span t-if="company.partner_id.city">, <span t-field="company.partner_id.city"/></span>
+                    <span t-if="company.phone"> | <span t-field="company.phone"/></span>
+                    <span t-if="company.email"> | <span t-field="company.email"/></span>
+                </span>
+            </div>
+        </div>
+        <div class="article" t-att-data-oe-model="doc._name" t-att-data-oe-id="doc.id">
+            <t t-out="0"/>
+        </div>
+        <div class="footer border-top pt-1">
+            <div class="text-center">
+                <span>Printed: </span>
+                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                <span t-if="company.partner_id.city"> | </span>
+                <span t-field="company.partner_id.city"/>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_hospital_doctor">
+        <t t-call="web.html_container">
+            <!-- Each doctor uses its own layout call, so its header and footer remain paired with its article.
+                 CSS page-break-after starts the next doctor on a fresh page; a single layout outside this loop was rejected because it would create only one header and footer set. -->
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="hr_hospital.report_hospital_doctor_layout">
+                    <div class="page" t-att-style="'padding-top: 8px; page-break-after: always;' if not doc_last else 'padding-top: 8px;'">
+                        <h2>
+                            <span t-field="doc.name"/>
+                            <t t-if="doc.category_id">
+                                <span> - </span>
+                                <span t-field="doc.category_id"/>
+                            </t>
+                        </h2>
+
+                        <h4 class="mt-4">Visit History</h4>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Date and Time</th>
+                                    <th>Patient</th>
+                                    <th>Visit</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.visit_ids" t-as="visit">
+                                    <td><span t-field="visit.scheduled_datetime"/></td>
+                                    <td><span t-field="visit.patient_id"/></td>
+                                    <td><span t-field="visit.name"/></td>
+                                    <td>
+                                        <span t-if="visit.state == 'planned'"
+                                              style="background-color: #ffc107; color: #212529; padding: 2px 6px;">Заплановано</span>
+                                        <span t-if="visit.state == 'completed'"
+                                              style="background-color: #198754; color: #ffffff; padding: 2px 6px;">Завершено</span>
+                                        <span t-if="visit.state == 'cancelled'"
+                                              style="background-color: #dc3545; color: #ffffff; padding: 2px 6px;">Скасовано</span>
+                                    </td>
+                                </tr>
+                                <tr t-if="not doc.visit_ids">
+                                    <td colspan="4" class="text-muted">No visits.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h4 class="mt-4">Patients</h4>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Gender</th>
+                                    <th>Date of Birth</th>
+                                    <th>Phone</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.patient_ids" t-as="patient">
+                                    <td><span t-field="patient.name"/></td>
+                                    <td><span t-field="patient.gender"/></td>
+                                    <td><span t-field="patient.birth_date"/></td>
+                                    <td><span t-field="patient.phone"/></td>
+                                </tr>
+                                <tr t-if="not doc.patient_ids">
+                                    <td colspan="4" class="text-muted">No patients.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
