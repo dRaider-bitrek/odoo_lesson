@@ -104,6 +104,7 @@
                 <field name="category_id"/>
                 <field name="observing_doctor_id"/>
                 <field name="active"/>
+                <field name="intern_ids"/>
                 <templates>
                     <t t-name="card">
                         <main>
@@ -111,8 +112,9 @@
                             <div t-if="record.category_id.raw_value">
                                 <field name="category_id"/>
                             </div>
-                            <div t-if="record.observing_doctor_id.raw_value">
-                                Mentor: <field name="observing_doctor_id"/>
+                            <div t-if="record.intern_ids.raw_value">
+                                <span class="fw-bold">Interns:</span>
+                                <field name="intern_ids" widget="many2many_tags"/>
                             </div>
                             <!-- Object actions centralize visit defaults. A separate XML action was rejected because it would duplicate default contexts for patient and doctor entry points. -->
                             <button name="action_create_visit" type="object" string="Create Visit" class="btn btn-primary mt-2"/>

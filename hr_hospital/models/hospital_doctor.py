@@ -12,6 +12,16 @@ class HospitalDoctor(models.Model):
     category_id = fields.Many2one('hospital.doctor.category', string='Category')
     user_id = fields.Many2one('res.users', string='User')
     active = fields.Boolean(default=True)
+    patient_ids = fields.One2many(
+        'hr.hospital.patient',
+        'doctor_id',
+        string='Patients',
+    )
+    visit_ids = fields.One2many(
+        'hr.hospital.visit',
+        'doctor_id',
+        string='Visits',
+    )
     is_intern = fields.Boolean(compute='_compute_is_intern', store=True)
 
     observing_doctor_id = fields.Many2one(

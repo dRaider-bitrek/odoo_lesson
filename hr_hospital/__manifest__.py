@@ -14,6 +14,7 @@
         'data/hospital_doctor_category_data.xml',
         'data/hr_hospital_disease_data.xml',
         'data/hr_hospital_actions.xml',
+        'report/hospital_doctor_report.xml',
         'views/hr_hospital_menu.xml',
         'views/hr_hospital_views.xml',
         'wizard/mass_reassign_doctor_wizard_views.xml',
